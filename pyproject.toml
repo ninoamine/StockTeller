@@ -1,0 +1,7 @@
+[project]
+name = "stockteller"
+version = "0.1.0"
+description = "Scrape the Casablanca stock exchange, analyze financial data, and predict stock trends with ML + LLMs."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
