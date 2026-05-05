@@ -34,3 +34,29 @@ def describe_df(df: pd.DataFrame) -> pd.DataFrame:
     print(f"Columns: {list(df.columns)}")
     print(f"Dtypes:\n{df.dtypes}\n")
     return df.describe()
+
+
+from datetime import date
+
+def scrape_to_dataframe(
+    quotes: list[dict[str, str]],
+    output_dir: str | Path = "data",
+) -> pd.DataFrame:
+    """Convert a list of quote dicts to a DataFrame and save as CSV.
+
+    Args:
+        quotes: list of dicts as returned by scrape_all_quotes().
+        output_dir: directory where the CSV file will be saved.
+
+    Returns:
+        A DataFrame containing all the quote data.
+    """
+    df = pd.DataFrame(quotes)
+
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    filename = output_path / f"quotes_{date.today().isoformat()}.csv"
+    df.to_csv(filename, index=False)
+
+    return df
