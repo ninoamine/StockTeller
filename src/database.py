@@ -50,3 +50,20 @@ def insert_daily_prices(df: pd.DataFrame) -> None:
         conn.commit()
     finally:
         conn.close()
+
+
+def get_price_history(ticker: str, days: int) -> pd.DataFrame:
+    """Get the price history for a given ticker and number of days."""
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT date, price
+            FROM daily_prices
+            WHERE ticker = ?
+            ORDER BY date DESC
+            LIMIT ?
+        """, (ticker, days))
+        return pd.DataFrame(cursor.fetchall(), columns=["date", "price"])
+    finally:
+        conn.close()
